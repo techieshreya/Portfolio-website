@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+/* ── Theme tokens (Tailwind v4 @theme) ────────────────── */
+@theme inline {
+  --color-blueprint-blue: #1a3c6e;
+  --color-blueprint-dark: #0f2445;
+  --color-safety-orange: #FF5722;
+  --color-electric-blue: #00E5FF;
+  --color-slate-grey: #37474F;
+  --color-paper-white: #FFFFFF;
+  --color-neon-green: #39FF14;
+  --color-amber-code: #FFBF00;
+
+  --font-sans: var(--font-space-grotesk), sans-serif;
+  --font-mono: var(--font-fira-code), monospace;
+  --font-marker: var(--font-permanent-marker), cursive;
+
+  --shadow-sharp: 4px 4px 0px rgba(0, 0, 0, 0.5);
+  --shadow-sharp-hover: 6px 6px 0px rgba(0, 0, 0, 0.4);
+  --shadow-deep: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Base (body blueprint grid) ───────────────────────── */
+body {
+  background-color: #1a3c6e;
+  background-image:
+    linear-gradient(rgba(26, 60, 110, 0.9), rgba(26, 60, 110, 0.9)),
+    linear-gradient(#ffffff 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
+  background-position: 0 0, -1px -1px, -1px -1px;
+  color: #fff;
+}
+
+/* ── Utility layer ────────────────────────────────────── */
+@layer utilities {
+  /* ── Pushpin ────────────────────────────────────────── */
+  .pin {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ff3333, #990000);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+    z-index: 50;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+  }
+
+  .pin::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+  }
+
+  .pin-chrome {
+    background: radial-gradient(circle at 30% 30%, #f0f0f0, #777);
+  }
+
+  /* ── Paper card variants ────────────────────────────── */
+  .paper-card {
+    background-color: #ffffff;
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #e0e0e0;
+  }
+
+  .paper-card:hover {
+    transform: translate(-2px, -2px) rotate(0deg) !important;
+    box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.5);
+    z-index: 40;
+  }
+
+  .paper-slate {
+    background-color: #37474F;
+    color: #ffffff;
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.6);
+  }
+
+  .paper-orange {
+    background-color: #FF5722;
+    color: white;
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
+  }
+
+  /* ── Tape strip ─────────────────────────────────────── */
+  .tape-strip {
+    position: absolute;
+    height: 25px;
+    width: 80px;
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transform: rotate(-3deg);
+    z-index: 20;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(1px);
+  }
+
+  /* ── Polaroid frame ─────────────────────────────────── */
+  .polaroid-frame {
+    background-color: white;
+    padding: 10px 10px 35px 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 5px 5px 0px rgba(0, 0, 0, 0.5);
+    transform: rotate(-2deg);
+    transition: transform 0.3s ease;
+  }
+
+  .polaroid-frame:hover {
+    transform: rotate(0deg) scale(1.02);
+    z-index: 30;
+  }
+
+  /* ── Glass terminal ─────────────────────────────────── */
+  .glass-terminal {
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+  }
+
+  /* ── Blueprint sub-grid ─────────────────────────────── */
+  .blueprint-grid-bg {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* ── Rotation helpers ───────────────────────────────── */
+  .rotate-1-cw  { transform: rotate(1deg); }
+  .rotate-2-cw  { transform: rotate(2deg); }
+  .rotate-3-cw  { transform: rotate(3deg); }
+  .rotate-1-ccw { transform: rotate(-1deg); }
+  .rotate-2-ccw { transform: rotate(-2deg); }
+  .rotate-3-ccw { transform: rotate(-3deg); }
+
+  /* ── Handwritten alias ──────────────────────────────── */
+  .handwritten {
+    font-family: var(--font-marker);
+  }
+
+  /* ── Selection colour ───────────────────────────────── */
+  ::selection {
+    background-color: #FF5722;
+    color: #fff;
+  }
+}
