@@ -3,9 +3,9 @@ export const profile = {
         first: "SHREYA",
         last: "GUPTA",
     },
-    title: "SOFTWARE ENGINEER",
+    title: "AI ENGINEER",
     tagline:
-        'Aspiring Software Engineer architecting <span class="text-electric-blue font-bold">Scalable Systems</span> and deploying <span class="bg-safety-orange text-white px-2 py-0.5 text-lg inline-block -rotate-1 shadow-sm">Generative AI</span> solutions.',
+        "Sudo Shreya: Giving your business superuser access to custom AI workflows and scalable backend systems.",
     education: {
         degree: "B.Tech CSE",
         university: "BML Munjal University",

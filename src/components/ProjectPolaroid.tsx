@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 export interface ProjectData {
     title: string;
@@ -25,9 +25,32 @@ export default function ProjectPolaroid({
     rotation = "rotate-1-cw",
     animDelay = 0,
 }: ProjectPolaroidProps) {
+    const ref = useRef<HTMLDivElement>(null);
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { stiffness: 200, damping: 20 });
+    const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { stiffness: 200, damping: 20 });
+
+    function handleMouse(e: React.MouseEvent<HTMLDivElement>) {
+        if (!ref.current) return;
+        const rect = ref.current.getBoundingClientRect();
+        x.set((e.clientX - rect.left) / rect.width - 0.5);
+        y.set((e.clientY - rect.top) / rect.height - 0.5);
+    }
+
+    function handleMouseLeave() {
+        x.set(0);
+        y.set(0);
+    }
+
     return (
         <motion.div
+            ref={ref}
             className={`group polaroid-frame bg-white ${rotation} hover:!rotate-0 transition-all duration-300 relative`}
+            style={{ perspective: 800, rotateX, rotateY, transformStyle: "preserve-3d" }}
+            onMouseMove={handleMouse}
+            onMouseLeave={handleMouseLeave}
             initial={{ opacity: 0, y: 40, rotate: -3 }}
             whileInView={{ opacity: 1, y: 0, rotate: 0 }}
             viewport={{ once: true, margin: "-80px" }}
@@ -46,6 +69,9 @@ export default function ProjectPolaroid({
                         backgroundSize: "20px 20px",
                     }}
                 />
+
+                {/* Gradient overlay that shifts on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-electric-blue/0 via-transparent to-safety-orange/0 group-hover:from-electric-blue/10 group-hover:to-safety-orange/10 transition-all duration-500 pointer-events-none z-10" />
 
                 {/* Blueprint wireframe overlay on hover */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
@@ -86,7 +112,7 @@ export default function ProjectPolaroid({
                 <h3 className="text-3xl font-bold mb-3 uppercase font-sans text-slate-900 tracking-tight">
                     {project.title}
                 </h3>
-                <p className="text-slate-600 mb-6 font-medium text-base leading-relaxed italic border-l-4 border-slate-200 pl-4">
+                <p className="text-slate-600 mb-6 font-medium text-base leading-relaxed italic border-l-4 border-slate-200 pl-4 group-hover:border-l-safety-orange transition-colors duration-300">
                     &ldquo;{project.tagline}&rdquo;
                 </p>
 
@@ -95,7 +121,7 @@ export default function ProjectPolaroid({
                     {project.tags.map((tag) => (
                         <span
                             key={tag}
-                            className="bg-slate-100 text-slate-700 border border-slate-300 px-3 py-1 text-xs font-mono font-bold rounded-sm"
+                            className="bg-slate-100 text-slate-700 border border-slate-300 px-3 py-1 text-xs font-mono font-bold rounded-sm hover:bg-slate-200 hover:border-safety-orange/50 transition-all duration-200"
                         >
                             {tag}
                         </span>
@@ -104,11 +130,11 @@ export default function ProjectPolaroid({
 
                 {/* Link */}
                 <a
-                    className="inline-flex items-center gap-2 text-sm font-bold uppercase text-safety-orange hover:text-orange-700 hover:underline decoration-2 transition-colors"
+                    className="inline-flex items-center gap-2 text-sm font-bold uppercase text-safety-orange hover:text-orange-700 hover:underline decoration-2 transition-all duration-200 group/link"
                     href={project.link.href}
                 >
                     {project.link.label}{" "}
-                    <span className="material-symbols-outlined text-lg">
+                    <span className="material-symbols-outlined text-lg group-hover/link:translate-x-1 transition-transform duration-200">
                         {project.link.icon}
                     </span>
                 </a>

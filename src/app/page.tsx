@@ -5,9 +5,13 @@ import ProjectPolaroid from "@/components/ProjectPolaroid";
 import type { ProjectData } from "@/components/ProjectPolaroid";
 import SystemStatus from "@/components/SystemStatus";
 import TechStack from "@/components/TechStack";
+import Services from "@/components/Services";
+import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import AnimatedSection from "@/components/AnimatedSection";
+import ScrollProgress from "@/components/ScrollProgress";
+import FloatingParticles from "@/components/FloatingParticles";
 import { projects } from "@/data/projects";
 import { profile } from "@/data/profile";
 import { getGitHubStatus } from "@/actions/github-status";
@@ -29,7 +33,7 @@ export default async function Home() {
         tags: p.tags,
         link: p.link,
         visual: (
-          <div className="w-40 h-40 bg-white rounded-full flex items-center justify-center relative z-10 shadow-xl border-4 border-slate-800">
+          <div className="w-40 h-40 bg-white rounded-full flex items-center justify-center relative z-10 shadow-xl border-4 border-slate-800 group-hover:shadow-[0_0_30px_rgba(255,87,34,0.3)] transition-shadow duration-300">
             <span className="material-symbols-outlined text-7xl text-safety-orange">
               {p.visualIcon}
             </span>
@@ -41,11 +45,17 @@ export default async function Home() {
 
   return (
     <>
+      <ScrollProgress />
+      <FloatingParticles />
       <Navbar />
 
       <main className="relative z-10 max-w-7xl mx-auto px-6 pt-12 pb-32">
         {/* ═════════ HERO ═════════ */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
+        <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
+          {/* Background gradient orbs */}
+          <div className="absolute -top-20 -left-40 w-[500px] h-[500px] bg-safety-orange/15 rounded-full blur-[100px] pointer-events-none animate-float-slow" />
+          <div className="absolute -bottom-20 -right-40 w-[400px] h-[400px] bg-electric-blue/15 rounded-full blur-[100px] pointer-events-none animate-float-medium" />
+
           {/* Left: Text */}
           <div className="lg:col-span-7 flex flex-col justify-center pt-8">
             <SystemStatus isOnline={status.isOnline} />
@@ -77,7 +87,7 @@ export default async function Home() {
               </h1>
 
               {/* Floating badge */}
-              <div className="absolute -right-8 top-24 rotate-12 bg-safety-orange text-white px-6 py-2 font-bold font-marker shadow-lg border border-orange-800 transform text-lg">
+              <div className="absolute -right-8 top-24 rotate-12 bg-safety-orange text-white px-6 py-2 font-bold font-marker shadow-lg border border-orange-800 transform text-lg hover:shadow-[0_0_20px_rgba(255,87,34,0.4)] transition-shadow duration-300">
                 {profile.title}
               </div>
             </BlueprintCard>
@@ -104,20 +114,22 @@ export default async function Home() {
             {/* CTA buttons */}
             <AnimatedSection className="mt-16 flex flex-wrap gap-6 items-center" delay={0.3}>
               <a
-                className="rotate-2-cw bg-blueprint-dark text-electric-blue px-8 py-4 font-bold text-lg uppercase flex items-center gap-3 shadow-sharp hover:translate-y-1 hover:shadow-none transition-all rounded-sm border border-electric-blue/30 font-mono"
+                className="group rotate-2-cw bg-blueprint-dark text-electric-blue px-8 py-4 font-bold text-lg uppercase flex items-center gap-3 shadow-sharp hover:translate-y-1 hover:shadow-none transition-all rounded-sm border border-electric-blue/30 font-mono relative overflow-hidden"
                 href="#projects"
               >
-                <span className="material-symbols-outlined">terminal</span>
-                Execute: Deploy
+                <span className="absolute inset-0 bg-gradient-to-r from-electric-blue/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="material-symbols-outlined relative z-10">terminal</span>
+                <span className="relative z-10">Execute: Deploy</span>
               </a>
               <a
-                className="rotate-1-ccw bg-white text-slate-900 border-2 border-slate-800 px-8 py-4 font-bold text-lg uppercase flex items-center gap-3 shadow-sharp hover:translate-y-1 hover:shadow-none transition-all rounded-sm font-sans"
+                className="group rotate-1-ccw bg-white text-slate-900 border-2 border-slate-800 px-8 py-4 font-bold text-lg uppercase flex items-center gap-3 shadow-sharp hover:translate-y-1 hover:shadow-none transition-all rounded-sm font-sans relative overflow-hidden"
                 href="#"
               >
-                <span className="material-symbols-outlined text-safety-orange">
+                <span className="absolute inset-0 bg-gradient-to-r from-safety-orange/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="material-symbols-outlined text-safety-orange relative z-10">
                   description
                 </span>
-                cat cv.pdf
+                <span className="relative z-10">cat cv.pdf</span>
               </a>
             </AnimatedSection>
           </div>
@@ -246,14 +258,22 @@ export default async function Home() {
           </BlueprintCard>
         </div>
 
+        {/* ═════════ SERVICES SECTION ═════════ */}
+        <AnimatedSection delay={0}>
+          <div id="services" className="scroll-mt-32">
+            <Services />
+          </div>
+        </AnimatedSection>
+
+
         {/* ═════════ PROJECTS SECTION ═════════ */}
         <AnimatedSection delay={0}>
           <div id="projects" className="mb-20 relative py-8">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-b border-dashed border-slate-400/50" />
+              <div className="w-full section-divider" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-blueprint-dark px-10 py-3 text-xl font-bold uppercase tracking-widest font-mono text-electric-blue border border-electric-blue/30 shadow-lg -rotate-1">
+              <span className="bg-blueprint-dark px-10 py-3 text-xl font-bold uppercase tracking-widest font-mono text-electric-blue border border-electric-blue/30 shadow-lg -rotate-1 text-glow">
                 Selected Operations
               </span>
             </div>
@@ -275,122 +295,138 @@ export default async function Home() {
         <AnimatedSection delay={0}>
           <div id="past-experience" className="mt-32 mb-20 relative py-8">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-b border-dashed border-slate-400/50" />
+              <div className="w-full section-divider" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-blueprint-dark px-10 py-3 text-xl font-bold uppercase tracking-widest font-mono text-electric-blue border border-electric-blue/30 shadow-lg rotate-1">
+              <span className="bg-blueprint-dark px-10 py-3 text-xl font-bold uppercase tracking-widest font-mono text-electric-blue border border-electric-blue/30 shadow-lg rotate-1 text-glow">
                 Mission Logs
               </span>
             </div>
           </div>
         </AnimatedSection>
 
-        <div className="space-y-10 px-4">
-          {/* Orange Business */}
-          <BlueprintCard
-            borderAccent="border-l-8 border-l-safety-orange"
-            className="p-8 md:p-10"
-            animDelay={0}
-          >
-            <div className="flex flex-col md:flex-row items-start gap-6">
-              <div className="w-16 h-16 bg-safety-orange rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg text-white">
-                <span className="material-symbols-outlined text-3xl">smart_toy</span>
-              </div>
-              <div className="flex-1">
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-2">
-                  <h3 className="font-bold text-2xl text-slate-900">Data &amp; AI Intern</h3>
-                  <span className="bg-neon-green/20 text-neon-green border border-neon-green/40 px-3 py-1 text-xs font-bold font-mono shadow-sm rounded-sm">
-                    PRESENT
-                  </span>
-                </div>
-                <p className="font-marker text-lg text-slate-500 mb-4">Orange Business Services · Gurugram</p>
-                <ul className="space-y-2 font-mono text-sm text-slate-600">
-                  <li className="flex gap-2">
-                    <span className="text-safety-orange font-bold">&gt;</span>
-                    Engineering an internal AI Assistant using Generative AI to automate team workflows and reduce manual response times.
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-safety-orange font-bold">&gt;</span>
-                    Building end-to-end data pipelines with Python and SQL for real-time network data visualization in Power BI.
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </BlueprintCard>
+        {/* Experience cards with timeline connector */}
+        <div className="relative px-4">
+          {/* Vertical timeline line */}
+          <div className="absolute left-[2.5rem] top-8 bottom-8 w-px bg-gradient-to-b from-safety-orange via-electric-blue to-neon-green hidden md:block" />
 
-          {/* Smart Eye */}
-          <BlueprintCard
-            borderAccent="border-l-8 border-l-electric-blue"
-            className="p-8 md:p-10"
-            animDelay={0.1}
-          >
-            <div className="flex flex-col md:flex-row items-start gap-6">
-              <div className="w-16 h-16 bg-electric-blue rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg text-slate-900">
-                <span className="material-symbols-outlined text-3xl">sensors</span>
-              </div>
-              <div className="flex-1">
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-2">
-                  <h3 className="font-bold text-2xl text-slate-900">AI &amp; IoT Intern</h3>
-                  <span className="bg-slate-100 text-slate-800 border border-slate-300 px-3 py-1 text-xs font-bold font-mono shadow-sm rounded-sm">
-                    OCT – DEC 2024
-                  </span>
+          <div className="space-y-10">
+            {/* Orange Business */}
+            <div className="relative">
+              {/* Timeline dot */}
+              <div className="absolute left-[2.1rem] top-10 w-3 h-3 rounded-full bg-safety-orange shadow-[0_0_10px_rgba(255,87,34,0.6)] z-10 hidden md:block" />
+              <BlueprintCard
+                borderAccent="border-l-8 border-l-safety-orange"
+                className="p-8 md:p-10 md:ml-14"
+                animDelay={0}
+              >
+                <div className="flex flex-col md:flex-row items-start gap-6">
+                  <div className="w-16 h-16 bg-safety-orange rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg text-white">
+                    <span className="material-symbols-outlined text-3xl">smart_toy</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-2">
+                      <h3 className="font-bold text-2xl text-slate-900">Data &amp; AI Intern</h3>
+                      <span className="bg-neon-green/20 text-neon-green border border-neon-green/40 px-3 py-1 text-xs font-bold font-mono shadow-sm rounded-sm animate-subtle-glow">
+                        PRESENT
+                      </span>
+                    </div>
+                    <p className="font-marker text-lg text-slate-500 mb-4">Orange Business Services · Gurugram</p>
+                    <ul className="space-y-2 font-mono text-sm text-slate-600">
+                      <li className="flex gap-2">
+                        <span className="text-safety-orange font-bold">&gt;</span>
+                        Engineering an internal AI Assistant using Generative AI to automate team workflows and reduce manual response times.
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-safety-orange font-bold">&gt;</span>
+                        Building end-to-end data pipelines with Python and SQL for real-time network data visualization in Power BI.
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                <p className="font-marker text-lg text-slate-500 mb-4">Smart Eye · New Delhi</p>
-                <ul className="space-y-2 font-mono text-sm text-slate-600">
-                  <li className="flex gap-2">
-                    <span className="text-electric-blue font-bold">&gt;</span>
-                    Optimized AI-driven IoT algorithms, achieving 15% improvement in real-time data processing on edge devices.
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-electric-blue font-bold">&gt;</span>
-                    Prototyped scalable ML pipelines for low-latency inference in resource-constrained embedded environments.
-                  </li>
-                </ul>
-              </div>
+              </BlueprintCard>
             </div>
-          </BlueprintCard>
 
-          {/* Kanad Networks */}
-          <BlueprintCard
-            borderAccent="border-l-8 border-l-slate-800"
-            className="p-8 md:p-10"
-            animDelay={0.2}
-          >
-            <div className="flex flex-col md:flex-row items-start gap-6">
-              <div className="w-16 h-16 bg-slate-800 rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg text-white">
-                <span className="material-symbols-outlined text-3xl">local_hospital</span>
-              </div>
-              <div className="flex-1">
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-2">
-                  <h3 className="font-bold text-2xl text-slate-900">Backend Developer Intern</h3>
-                  <span className="bg-slate-100 text-slate-800 border border-slate-300 px-3 py-1 text-xs font-bold font-mono shadow-sm rounded-sm">
-                    JUN – JUL 2024
-                  </span>
+            {/* Smart Eye */}
+            <div className="relative">
+              <div className="absolute left-[2.1rem] top-10 w-3 h-3 rounded-full bg-electric-blue shadow-[0_0_10px_rgba(0,229,255,0.6)] z-10 hidden md:block" />
+              <BlueprintCard
+                borderAccent="border-l-8 border-l-electric-blue"
+                className="p-8 md:p-10 md:ml-14"
+                animDelay={0.1}
+              >
+                <div className="flex flex-col md:flex-row items-start gap-6">
+                  <div className="w-16 h-16 bg-electric-blue rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg text-slate-900">
+                    <span className="material-symbols-outlined text-3xl">sensors</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-2">
+                      <h3 className="font-bold text-2xl text-slate-900">AI &amp; IoT Intern</h3>
+                      <span className="bg-slate-100 text-slate-800 border border-slate-300 px-3 py-1 text-xs font-bold font-mono shadow-sm rounded-sm">
+                        OCT – DEC 2024
+                      </span>
+                    </div>
+                    <p className="font-marker text-lg text-slate-500 mb-4">Smart Eye · New Delhi</p>
+                    <ul className="space-y-2 font-mono text-sm text-slate-600">
+                      <li className="flex gap-2">
+                        <span className="text-electric-blue font-bold">&gt;</span>
+                        Optimized AI-driven IoT algorithms, achieving 15% improvement in real-time data processing on edge devices.
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-electric-blue font-bold">&gt;</span>
+                        Prototyped scalable ML pipelines for low-latency inference in resource-constrained embedded environments.
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                <p className="font-marker text-lg text-slate-500 mb-4">Kanad Networks Pvt. Ltd. · Gurugram</p>
-                <ul className="space-y-2 font-mono text-sm text-slate-600">
-                  <li className="flex gap-2">
-                    <span className="text-slate-800 font-bold">&gt;</span>
-                    Architected MedVisor, a HIPAA-compliant healthcare platform; optimized SQL schemas to reduce query latency by 40%.
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-slate-800 font-bold">&gt;</span>
-                    Developed modular RESTful APIs using MERN Stack and established CI/CD pipelines for automated deployment.
-                  </li>
-                </ul>
-              </div>
+              </BlueprintCard>
             </div>
-          </BlueprintCard>
+
+            {/* Kanad Networks */}
+            <div className="relative">
+              <div className="absolute left-[2.1rem] top-10 w-3 h-3 rounded-full bg-neon-green shadow-[0_0_10px_rgba(57,255,20,0.6)] z-10 hidden md:block" />
+              <BlueprintCard
+                borderAccent="border-l-8 border-l-slate-800"
+                className="p-8 md:p-10 md:ml-14"
+                animDelay={0.2}
+              >
+                <div className="flex flex-col md:flex-row items-start gap-6">
+                  <div className="w-16 h-16 bg-slate-800 rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg text-white">
+                    <span className="material-symbols-outlined text-3xl">local_hospital</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-2">
+                      <h3 className="font-bold text-2xl text-slate-900">Backend Developer Intern</h3>
+                      <span className="bg-slate-100 text-slate-800 border border-slate-300 px-3 py-1 text-xs font-bold font-mono shadow-sm rounded-sm">
+                        JUN – JUL 2024
+                      </span>
+                    </div>
+                    <p className="font-marker text-lg text-slate-500 mb-4">Kanad Networks Pvt. Ltd. · Gurugram</p>
+                    <ul className="space-y-2 font-mono text-sm text-slate-600">
+                      <li className="flex gap-2">
+                        <span className="text-slate-800 font-bold">&gt;</span>
+                        Architected MedVisor, a HIPAA-compliant healthcare platform; optimized SQL schemas to reduce query latency by 40%.
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-slate-800 font-bold">&gt;</span>
+                        Developed modular RESTful APIs using MERN Stack and established CI/CD pipelines for automated deployment.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </BlueprintCard>
+            </div>
+          </div>
         </div>
 
         {/* ═════════ ACHIEVEMENTS & LEADERSHIP SECTION ═════════ */}
         <AnimatedSection delay={0}>
           <div id="achievements" className="mt-32 mb-20 relative py-8">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-b border-dashed border-slate-400/50" />
+              <div className="w-full section-divider" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-blueprint-dark px-10 py-3 text-xl font-bold uppercase tracking-widest font-mono text-electric-blue border border-electric-blue/30 shadow-lg -rotate-1">
+              <span className="bg-blueprint-dark px-10 py-3 text-xl font-bold uppercase tracking-widest font-mono text-electric-blue border border-electric-blue/30 shadow-lg -rotate-1 text-glow">
                 Commendations
               </span>
             </div>
@@ -403,12 +439,12 @@ export default async function Home() {
             variant="orange"
             rotation="rotate-1-cw"
             pins={[{ style: "chrome" }]}
-            className="p-8 flex flex-col justify-between"
+            className="p-8 flex flex-col justify-between group/achievement"
             animDelay={0}
           >
             <div>
               <span
-                className="material-symbols-outlined text-white/30 absolute -bottom-4 -right-2 rotate-12"
+                className="material-symbols-outlined text-white/30 absolute -bottom-4 -right-2 rotate-12 group-hover/achievement:text-white/50 transition-colors duration-300"
                 style={{ fontSize: 100 }}
               >
                 emoji_events
@@ -430,12 +466,12 @@ export default async function Home() {
             variant="slate"
             rotation="rotate-1-ccw"
             pins={[{ style: "chrome", position: "top-3 right-1/2 translate-x-1/2" }]}
-            className="p-8 flex flex-col justify-between"
+            className="p-8 flex flex-col justify-between group/achievement"
             animDelay={0.1}
           >
             <div>
               <span
-                className="material-symbols-outlined text-slate-600/30 absolute -bottom-4 -right-2 rotate-12"
+                className="material-symbols-outlined text-slate-600/30 absolute -bottom-4 -right-2 rotate-12 group-hover/achievement:text-slate-500/50 transition-colors duration-300"
                 style={{ fontSize: 100 }}
               >
                 target
@@ -456,12 +492,12 @@ export default async function Home() {
           <BlueprintCard
             rotation="rotate-2-cw"
             pins={[{ style: "red" }]}
-            className="p-8 flex flex-col justify-between"
+            className="p-8 flex flex-col justify-between group/achievement"
             animDelay={0.2}
           >
             <div>
               <span
-                className="material-symbols-outlined text-slate-300/30 absolute -bottom-4 -right-2 rotate-12"
+                className="material-symbols-outlined text-slate-300/30 absolute -bottom-4 -right-2 rotate-12 group-hover/achievement:text-slate-400/50 transition-colors duration-300"
                 style={{ fontSize: 100 }}
               >
                 volunteer_activism
@@ -478,6 +514,24 @@ export default async function Home() {
             </div>
           </BlueprintCard>
         </div>
+
+        {/* ═════════ CONTACT SECTION ═════════ */}
+        <AnimatedSection delay={0}>
+          <div className="mb-20 relative py-8">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full section-divider" />
+            </div>
+            <div className="relative flex justify-center">
+              <span className="bg-blueprint-dark px-10 py-3 text-xl font-bold uppercase tracking-widest font-mono text-electric-blue border border-electric-blue/30 shadow-lg -rotate-1 text-glow">
+                Contact Me
+              </span>
+            </div>
+          </div>
+
+          <div id="contact" className="scroll-mt-32">
+            <Contact />
+          </div>
+        </AnimatedSection>
       </main>
 
       <Footer />
